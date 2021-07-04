@@ -1,0 +1,50 @@
+## Generated mta.yaml based on template version 0.4.0
+## appName = demo_service_implementation
+## language=nodejs; multitenant=false
+## approuter=
+_schema-version: '3.1'
+ID: demo_service_implementation
+version: 1.0.0
+description: "Demo CAP Application demonstrating service implementation."
+parameters:
+  enable-parallel-deployments: true
+   
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm install --production
+      - npx -p @sap/cds-dk cds build --production
+
+modules:
+ # --------------------- SERVER MODULE ------------------------
+ - name: demo_service_implementation-srv
+ # ------------------------------------------------------------
+   type: nodejs
+   path: gen/srv
+   properties:
+     EXIT: 1  # required by deploy.js task to terminate 
+   provides:
+    - name: demo_service_implementation-api      # required by consumers of CAP services (e.g. approuter)
+      properties:
+        srv-url: ${default-url}
+   requires:
+     - name: demo_service_implementation-destination
+     - name: demo_service_implementation-uaa
+
+resources:
+ - name: demo_service_implementation-destination
+   type: org.cloudfoundry.existing-service
+   parameters:
+     service-name: demo_service_implementation-destination
+
+ - name: demo_service_implementation-uaa
+   type: org.cloudfoundry.managed-service
+   parameters:
+     path: ./xs-security.json
+     service: xsuaa
+     service-plan: application  
+
+
+
+

@@ -1,0 +1,203 @@
+{
+  "definitions": {
+    "procurement": {
+      "kind": "service"
+    },
+    "procurement.FunctionImportResult": {
+      "kind": "type",
+      "elements": {
+        "Success": {
+          "type": "cds.Boolean"
+        }
+      }
+    },
+    "procurement.PurchaseOrders": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "POId": {
+          "key": true,
+          "type": "cds.String",
+          "length": 10
+        },
+        "OrderedById": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "OrderedByName": {
+          "type": "cds.LargeString"
+        },
+        "ChangedAt": {
+          "type": "cds.Timestamp"
+        },
+        "SupplierId": {
+          "type": "cds.String",
+          "length": 10
+        },
+        "SupplierName": {
+          "type": "cds.String",
+          "length": 80
+        },
+        "DeliveryAddress": {
+          "type": "cds.LargeString"
+        },
+        "DeliveryDateEarliest": {
+          "type": "cds.Timestamp"
+        },
+        "LaterDelivDateExist": {
+          "type": "cds.String",
+          "length": 1
+        },
+        "GrossAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "CurrencyCode": {
+          "type": "cds.String",
+          "length": 5
+        },
+        "ItemCount": {
+          "type": "cds.Integer"
+        },
+        "Supplier": {
+          "type": "cds.Association",
+          "target": "procurement.Suppliers",
+          "on": [
+            {
+              "ref": [
+                "Supplier",
+                "Id"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "SupplierId"
+              ]
+            }
+          ]
+        },
+        "PurchaseOrderItems": {
+          "type": "cds.Association",
+          "target": "procurement.PurchaseOrderItems",
+          "cardinality": {
+            "max": "*"
+          },
+          "on": [
+            {
+              "ref": [
+                "PurchaseOrderItems",
+                "POId"
+              ]
+            },
+            "=",
+            {
+              "ref": [
+                "POId"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    "procurement.PurchaseOrderItems": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "POId": {
+          "key": true,
+          "type": "cds.String",
+          "length": 10
+        },
+        "POItemPos": {
+          "key": true,
+          "type": "cds.String",
+          "length": 10
+        },
+        "Product": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "Price": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "PriceCurrency": {
+          "type": "cds.String",
+          "length": 5
+        },
+        "GrossAmount": {
+          "type": "cds.Decimal",
+          "precision": 15,
+          "scale": 2
+        },
+        "GrossAmountCurrency": {
+          "type": "cds.String",
+          "length": 5
+        },
+        "Quantity": {
+          "type": "cds.Decimal",
+          "precision": 13,
+          "scale": 3
+        },
+        "QuantityUnit": {
+          "type": "cds.String",
+          "length": 3
+        },
+        "DeliveryDate": {
+          "type": "cds.Timestamp"
+        }
+      }
+    },
+    "procurement.Suppliers": {
+      "kind": "entity",
+      "@cds.persistence.skip": true,
+      "elements": {
+        "Id": {
+          "key": true,
+          "type": "cds.String",
+          "length": 10
+        },
+        "Name": {
+          "type": "cds.String",
+          "length": 80
+        },
+        "Phone": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "Email": {
+          "type": "cds.String",
+          "length": 255
+        },
+        "Web": {
+          "type": "cds.LargeString"
+        },
+        "FormattedAddress": {
+          "type": "cds.String",
+          "length": 157
+        },
+        "FormattedContactName": {
+          "type": "cds.String",
+          "length": 88
+        },
+        "ContactPhone": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "ContactFax": {
+          "type": "cds.String",
+          "length": 30
+        },
+        "ContactEmail": {
+          "type": "cds.LargeString"
+        },
+        "ChangedAt": {
+          "type": "cds.Timestamp"
+        }
+      }
+    }
+  }
+}
